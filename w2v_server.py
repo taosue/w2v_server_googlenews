@@ -52,7 +52,7 @@ def server_exception_wrap(func):
             result['taken'] = time.time() - start
             logger.info("method '%s' succeeded in %ss" % (func.func_name, result['taken']))
             return result
-        except Exception, e:
+        except Exception as e:
             logger.exception("exception serving request")
             result = {
                 'error': repr(e),
@@ -101,10 +101,10 @@ class Server(object):
     @cherrypy.tools.json_out()
     def most_similar(self, *args, **kwargs):
         positive = cherrypy.request.params.get('positive[]', [])
-        if isinstance(positive, basestring):
+        if isinstance(positive, str):
             positive = [positive]
         negative = cherrypy.request.params.get('negative[]', [])
-        if isinstance(negative, basestring):
+        if isinstance(negative, str):
             negative = [negative]
         try:
             result = self.model.most_similar(
@@ -166,7 +166,7 @@ if __name__ == '__main__':
 
     # check and process input arguments
     if len(sys.argv) < 2:
-        print globals()['__doc__'] % locals()
+        print(globals()['__doc__'] % locals())
         sys.exit(1)
 
     conf_file = sys.argv[1]
